@@ -42,3 +42,18 @@ You don’t have to ever use `eject`. The curated feature set is suitable for sm
 You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
 
 To learn React, check out the [React documentation](https://reactjs.org/).
+
+
+Hey !!!
+
+On the next section we will install the dependencies we need for this project. 
+
+If you are using NPM copy the "npm" line or the yarn line if you use "yarn".
+
+**YARN:**
+
+yarn add @material-ui/core d3-ease@1.0.3 firebase@5.0.4 react-firebase-file-uploader@2.4.1 react-move@2.7.0 react-reveal@1.2.2 react-router-dom@4.3.1 
+
+**NPM:**
+
+npm install @material-ui/core d3-ease@1.0.3 firebase@5.0.4 react-firebase-file-uploader@2.4.1 react-move@2.7.0 react-reveal@1.2.2 react-router-dom@4.3.1 --save 
