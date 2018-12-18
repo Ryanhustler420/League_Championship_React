@@ -27,4 +27,24 @@ const Tag = (props) => {
 
 }
 
+
+export const firebaseLooper = (snapshot) => {
+    const data = [];
+    snapshot.forEach((childSnapshot) => {
+        data.push({
+            ...childSnapshot.val(),
+            id: childSnapshot.key
+        })
+    })
+    return data;
+}
+
+export const reverseArray = (actualArray) => {
+    const ReversedArray = [];
+    for(let i = actualArray.length - 1; i >= 0; i-- ){
+        ReversedArray.push(actualArray[i]);
+    }
+    return ReversedArray;
+}
+
 export default Tag;
