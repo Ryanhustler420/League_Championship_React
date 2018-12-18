@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import Fade from 'react-reveal/Fade';
 import FormInput from './../../UI/FormFields';
 import { validate } from './../../UI/misc';
+import { firebasePromotions } from '../../../firebase';
 
 class Enroll extends Component {
 
@@ -39,7 +40,15 @@ class Enroll extends Component {
         }
 
         if(formIsValid) {
-            console.log(dataToSubmit);
+            firebasePromotions.orderByChild('email').equalTo(dataToSubmit.email).once('value')
+            .then((snapshot) => {
+                if(snapshot.val() === null) {
+                    firebasePromotions.push(dataToSubmit);
+                    this.resetFormSuccess(true);
+                } else {
+                    this.resetFormSuccess(false);
+                }
+            })
         } else {
             this.setState({formError: true})
         }
@@ -65,6 +74,30 @@ class Enroll extends Component {
         })
     }
 
+    resetFormSuccess(type) {
+        const newFormData = { ...this.state.formData } // made a copy of state
+
+        for(let key in newFormData){
+            newFormData[key].value = '';
+            newFormData[key].valid = false;
+            newFormData[key].validationMessage = '';
+        }
+
+        this.setState({
+            formError: false,
+            formData: newFormData,
+            formSuccess: type ? 'Congratulations' : 'Already Enrolled'
+        });
+
+        this.clearSuccessMessage();
+    }
+
+    clearSuccessMessage() {
+        setTimeout(() => {
+            this.setState({formSuccess: ''})
+        }, 2000);
+    }
+
     render() {
         return (
             <Fade>
@@ -82,7 +115,11 @@ class Enroll extends Component {
 
                             { this.state.formError ? <div className="error_label">Something is wrong. try again</div> : null }
 
+                            <div className="success_label">{this.state.formSuccess}</div>
+
                             <button onClick={(event) => this.submitForm(event)}>Enroll</button>
+
+                            <div className="enroll_discl">Ad commodo dolor aute consectetur culpa cillum minim. Magna excepteur consequat ullamco pariatur dolore cillum culpa velit dolor dolor. Ea nostrud est laboris dolor sunt adipisicing.</div>
                         </div>
                     </form>
                 </div>
