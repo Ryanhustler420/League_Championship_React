@@ -57,3 +57,5 @@ yarn add @material-ui/core d3-ease@1.0.3 firebase@5.0.4 react-firebase-file-uplo
 **NPM:**
 
 npm install @material-ui/core d3-ease@1.0.3 firebase@5.0.4 react-firebase-file-uploader@2.4.1 react-move@2.7.0 react-reveal@1.2.2 react-router-dom@4.3.1 --save 
+
+> import JSON to firebase
