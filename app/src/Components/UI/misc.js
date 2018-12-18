@@ -28,6 +28,19 @@ const Tag = (props) => {
 
 }
 
+export const validate = (element) => {
+    let error = [true, ''];
+
+    if(element.validation.required){
+        const valid = element.value.trim() !== '';
+        const message = `${!valid ? 'this field is required': ''}`;
+
+        error = !valid ? [valid, message] : error;
+    }
+
+    return error;
+}
+
 
 export const firebaseLooper = (snapshot) => {
     const data = [];
