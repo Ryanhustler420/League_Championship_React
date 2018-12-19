@@ -2,8 +2,9 @@ import React, { Component } from 'react'
 import AdminLayout from './../../../Hoc/AdminLayout';
 
 import FormInput from './../../UI/FormFields';
-import { validate } from '../../UI/misc';
+import { validate, firebaseLooper } from '../../UI/misc';
 
+import { firebaseMatches, firebaseTeams, firebaseDB } from '../../../firebase';
 
 export default class AddEditMatch extends Component {
 
@@ -164,6 +165,80 @@ export default class AddEditMatch extends Component {
         }
     }
 
+    
+    updateFields(match, teamOptions, teams, type, matchId) {
+        const newFormData =  {
+            ...this.state.formData
+        }
+
+        for(let key in newFormData) {
+            if(match){
+                newFormData[key].value = match[key];
+                newFormData[key].valid = true;
+            }
+
+            if(key === 'local' || key === 'away'){
+                newFormData[key].config.options = teamOptions
+            }
+        }
+
+        this.setState({
+            matchId,
+            formType: type,
+            formData: newFormData,
+            teams
+        });
+
+    }
+
+    componentDidMount() {
+        const matchId = this.props.match.params.id;
+        
+        const getTeams = (match, type) => {
+            firebaseTeams.once('value').then(snapshot => {
+                const teams = firebaseLooper(snapshot);
+                
+                const teamOptions = [];
+                snapshot.forEach((childSnapshot) => {
+                    teamOptions.push({
+                        key: childSnapshot.val().shortName,
+                        value: childSnapshot.val().shortName
+                    })
+                });
+                
+                this.updateFields(match, teamOptions, teams, type, matchId);
+            })
+        }
+
+        if(!matchId) {
+            // Add Match
+        } else {
+            firebaseDB.ref(`matches/${matchId}`).once('value')
+            .then((snapshot) => {
+                const match = snapshot.val();
+                getTeams(match, 'Edit Match')
+            })
+        }
+    }
+    
+    updateForm(e) {
+        const newFormData = { ...this.state.formData } // made a copy of state
+        const newElement = { ...newFormData[e.id] } // grab email object
+
+        newElement.value = e.event.target.value;
+
+        let _validData = validate(newElement);
+
+        newElement.valid = _validData[0];
+        newElement.validationMessage = _validData[1];
+
+        newFormData[e.id] = newElement;
+
+        this.setState({
+            formError: false,
+            formData: newFormData
+        })
+    }
 
     render() {
         return (
