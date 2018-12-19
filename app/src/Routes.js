@@ -5,6 +5,7 @@ import Home from './Components/home';
 import SignIn from './Components/signin/index';
 import DashBoard from './Components/admin/Dashboard';
 import PrivateRoutes from './Components/authRoutes/privateRoutes';
+import PublicRoutes from './Components/authRoutes/publicRoutes';
 
 const Routes = (props) => {
 
@@ -13,8 +14,8 @@ const Routes = (props) => {
   return (
     <Layout>
       <Switch>
-        <Route path="/" exact component={Home} />
-        <Route path="/sign_in" exact component={SignIn}/>
+        <PublicRoutes {...props} restricted={false} path="/" exact component={Home} />
+        <PublicRoutes {...props} restricted={true} path="/sign_in" exact component={SignIn} />
         <PrivateRoutes {...props} path="/dashboard" exact component={DashBoard}/>
       </Switch>
     </Layout>
