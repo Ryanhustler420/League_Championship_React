@@ -110,11 +110,15 @@ export default class AddEditPlayers extends Component {
         }
     }
 
-    updateForm(e) {
+    updateForm(e, content = '') {
         const newFormData = { ...this.state.formData } // made a copy of state
         const newElement = { ...newFormData[e.id] } // grab email object
 
-        newElement.value = e.event.target.value;
+        if(content === ''){
+            newElement.value = e.event.target.value;
+        } else {
+            newElement.value = content;
+        }
 
         let _validData = validate(newElement);
 
@@ -141,19 +145,35 @@ export default class AddEditPlayers extends Component {
         }
 
         if(formIsValid) {
+            if(this.state.formType === 'Edit player'){
 
-
+            }else {
+                firebasePlayers.push(dataToSubmit).then(() => {
+                    this.props.history.push('/admin_players');
+                }).catch(e => {
+                    this.setState({
+                        formError: true
+                    })
+                })
+            }
+            
         } else {
             this.setState({ formError: true });
         }
     }
 
     resetImage = () => {
-
+        const newFormData = { ...this.state.formData } // made a copy of state
+        newFormData['image'].value = '';
+        newFormData['image'].valid = false;
+        this.setState({
+            defaultImg: '',
+            formData: newFormData
+        })
     }
 
-    storeFileName = () => {
-
+    storeFileName = (filename) => {
+        this.updateForm({id: 'image'}, filename);
     }
 
     render() {
