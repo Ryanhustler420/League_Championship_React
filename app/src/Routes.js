@@ -11,6 +11,7 @@ import AddEditMatch from './Components/admin/matches/addEditMatch';
 import AdminPlayers from './Components/admin/players/index';
 import AddEditPlayers from './Components/admin/players/addEditPlayers';
 import Theteam from './Components/theTeam/index';
+import TheMatches from './Components/theMatches/index';
 
 const Routes = (props) => {
 
@@ -22,6 +23,7 @@ const Routes = (props) => {
         <PublicRoutes {...props} restricted={false} path="/" exact component={Home} />
         <PublicRoutes {...props} restricted={true} path="/sign_in" exact component={SignIn} />
         <PublicRoutes {...props} restricted={false} path="/the_team" exact component={Theteam} />
+        <PublicRoutes {...props} restricted={false} path="/the_matches" exact component={TheMatches} />
         <PrivateRoutes {...props} path="/dashboard" exact component={DashBoard}/>
 
         <PrivateRoutes {...props} path="/admin_players" exact component={AdminPlayers}/>
